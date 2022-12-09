@@ -14,6 +14,7 @@ In the layer's properties, in the "Symbology" tab, change "Single symbol" to "Ca
 - 2020, dark blue
 - 2021, neon green
 - 2022, brown
+
 The traces for the other years are hidden behind the others so you can let them as you want.
 
 On the map, figure 5 is on the top right, figure 6 is on the bottom and figure 7 is on the top left.
