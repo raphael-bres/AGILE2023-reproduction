@@ -15,6 +15,7 @@ In the layer's properties, in the "Symbology" tab, change "Single symbol" to "Ca
 - 2021, neon green
 - 2022, brown
 
+You can add the start and end point by using the tool "Extract Specific Vertices". As parameters, choose alldata.shp as input layer, for "Vertex indices" write 0,-1 and you can launch the tool. A layer named "Vertices" should appear in the "Layers" menu. On the properties of that new layer, in the "Symbology" tab, change "Single symbol" to "Categorized" and use the "vertex_pos" attribute with the 0 in red and the -1 in green.
 The traces for the other years are hidden behind the others so you can let them as you want.
 
 On the map, figure 5 is on the top right, figure 6 is on the bottom and figure 7 is on the top left.
