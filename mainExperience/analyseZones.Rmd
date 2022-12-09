@@ -1,0 +1,203 @@
+---
+title: "boxplot"
+author: "Raphaël Bres"
+date: "6/24/2022"
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+#Chargement des données
+
+```{r}
+library("dplyr")
+library("ggplot2")
+setwd('C:/Users/22113336t/Desktop/these/reprodSchmidl/zones')
+data<- read.csv('alldataZones.csv',sep=',')
+data$ï..city<-factor(data$ï..city)
+data$year<-factor(data$year)
+data$pctDiffDis<-as.double(data$pctDiffDis)
+data$pctDiffDur<-as.double(data$pctDiffDur)
+label<-levels(data$ï..city)
+years<-levels(data$year)
+anneesEvo<-c("2014/2015","2015/2016","2016/2017","2017/2018","2018/2019","2019/2020","2020/2021","2021/2022")
+```
+
+
+#Création des matrices
+
+```{r}
+#Creation des matrices pour l'évolution des itinéraires d'une année à l'autre aux seuils 1, 5, 20 et 50%
+d1Dur<-matrix(nrow=length(label),ncol=length(anneesEvo))
+d5Dur<-matrix(nrow=length(label),ncol=length(anneesEvo))
+d20Dur<-matrix(nrow=length(label),ncol=length(anneesEvo))
+d50Dur<-matrix(nrow=length(label),ncol=length(anneesEvo))
+d1infDur<-matrix(nrow=length(label),ncol=length(anneesEvo))
+d5infDur<-matrix(nrow=length(label),ncol=length(anneesEvo))
+d20infDur<-matrix(nrow=length(label),ncol=length(anneesEvo))
+d50infDur<-matrix(nrow=length(label),ncol=length(anneesEvo))
+d1supDur<-matrix(nrow=length(label),ncol=length(anneesEvo))
+d5supDur<-matrix(nrow=length(label),ncol=length(anneesEvo))
+d20supDur<-matrix(nrow=length(label),ncol=length(anneesEvo))
+d50supDur<-matrix(nrow=length(label),ncol=length(anneesEvo))
+d1Dist<-matrix(nrow=length(label),ncol=length(anneesEvo))
+d5Dist<-matrix(nrow=length(label),ncol=length(anneesEvo))
+d20Dist<-matrix(nrow=length(label),ncol=length(anneesEvo))
+d50Dist<-matrix(nrow=length(label),ncol=length(anneesEvo))
+d1infDist<-matrix(nrow=length(label),ncol=length(anneesEvo))
+d5infDist<-matrix(nrow=length(label),ncol=length(anneesEvo))
+d20infDist<-matrix(nrow=length(label),ncol=length(anneesEvo))
+d50infDist<-matrix(nrow=length(label),ncol=length(anneesEvo))
+d1supDist<-matrix(nrow=length(label),ncol=length(anneesEvo))
+d5supDist<-matrix(nrow=length(label),ncol=length(anneesEvo))
+d20supDist<-matrix(nrow=length(label),ncol=length(anneesEvo))
+d50supDist<-matrix(nrow=length(label),ncol=length(anneesEvo))
+d0<-matrix(nrow=length(label),ncol=length(anneesEvo))
+#Noms des lignes de ces matrices
+rownames(d1Dur)<-label
+rownames(d5Dur)<-label
+rownames(d20Dur)<-label
+rownames(d50Dur)<-label
+rownames(d1infDur)<-label
+rownames(d5infDur)<-label
+rownames(d20infDur)<-label
+rownames(d50infDur)<-label
+rownames(d1supDur)<-label
+rownames(d5supDur)<-label
+rownames(d20supDur)<-label
+rownames(d50supDur)<-label
+rownames(d1Dist)<-label
+rownames(d5Dist)<-label
+rownames(d20Dist)<-label
+rownames(d50Dist)<-label
+rownames(d1infDist)<-label
+rownames(d5infDist)<-label
+rownames(d20infDist)<-label
+rownames(d50infDist)<-label
+rownames(d1supDist)<-label
+rownames(d5supDist)<-label
+rownames(d20supDist)<-label
+rownames(d50supDist)<-label
+rownames(d0)<-label
+#Noms des colonnes de ces matrices
+colnames(d1Dur)<-anneesEvo
+colnames(d5Dur)<-anneesEvo
+colnames(d20Dur)<-anneesEvo
+colnames(d50Dur)<-anneesEvo
+colnames(d1infDur)<-anneesEvo
+colnames(d5infDur)<-anneesEvo
+colnames(d20infDur)<-anneesEvo
+colnames(d50infDur)<-anneesEvo
+colnames(d1supDur)<-anneesEvo
+colnames(d5supDur)<-anneesEvo
+colnames(d20supDur)<-anneesEvo
+colnames(d50supDur)<-anneesEvo
+colnames(d1Dist)<-anneesEvo
+colnames(d5Dist)<-anneesEvo
+colnames(d20Dist)<-anneesEvo
+colnames(d50Dist)<-anneesEvo
+colnames(d1infDist)<-anneesEvo
+colnames(d5infDist)<-anneesEvo
+colnames(d20infDist)<-anneesEvo
+colnames(d50infDist)<-anneesEvo
+colnames(d1supDist)<-anneesEvo
+colnames(d5supDist)<-anneesEvo
+colnames(d20supDist)<-anneesEvo
+colnames(d50supDist)<-anneesEvo
+colnames(d0)<-anneesEvo
+```
+
+
+
+```{r}
+#Compteur pour le nombre de lignes dans les matrices
+nbLigne=1
+#boucle sur les label au réseau
+for(i in label){
+  #Compteur pour le nombre de colonnes dans les matrices
+  nbCol=1
+  #Boucle sur les années mais on ne veut pas 2014
+  for(y in years){
+    if(y!=2014){
+      #On somme les augmentations et les diminutions de la durée des itinéraires supérieures/inférieures à x% par distance au réseau et par année puis on divise par le nombre de traces (5000) et on transforme en pourcentage
+      d1Dur[nbLigne,nbCol]<-(sum(data$ï..city==i & data$year==y & data$pctDiffDur>=1)+sum(data$ï..city==i & data$year==y & data$pctDiffDur<=-1))/10 #50 pour /5000*100
+      d1infDur[nbLigne,nbCol]<-sum(data$ï..city==i & data$year==y & data$pctDiffDur<=-1)/10 #50 pour /5000*100
+      d1supDur[nbLigne,nbCol]<-sum(data$ï..city==i & data$year==y & data$pctDiffDur>=1)/10 #50 pour /5000*100
+      
+      d5Dur[nbLigne,nbCol]<-(sum(data$ï..city==i & data$year==y & data$pctDiffDur>=5)+sum(data$ï..city==i & data$year==y & data$pctDiffDur<=-5))/10
+      d5infDur[nbLigne,nbCol]<-sum(data$ï..city==i & data$year==y & data$pctDiffDur<=-5)/10
+      d5supDur[nbLigne,nbCol]<-sum(data$ï..city==i & data$year==y & data$pctDiffDur>=5)/10
+      
+      d20Dur[nbLigne,nbCol]<-(sum(data$ï..city==i & data$year==y & data$pctDiffDur>=20)+sum(data$ï..city==i & data$year==y & data$pctDiffDur<=-20))/10
+      d20infDur[nbLigne,nbCol]<-sum(data$ï..city==i & data$year==y & data$pctDiffDur<=-20)/10
+      d20supDur[nbLigne,nbCol]<-sum(data$ï..city==i & data$year==y & data$pctDiffDur>=20)/10
+      
+      d50Dur[nbLigne,nbCol]<-(sum(data$ï..city==i & data$year==y & data$pctDiffDur>=50)+sum(data$ï..city==i & data$year==y & data$pctDiffDur<=-50))/10
+      d50infDur[nbLigne,nbCol]<-sum(data$ï..city==i & data$year==y & data$pctDiffDur<=-50)/10
+      d50supDur[nbLigne,nbCol]<-sum(data$ï..city==i & data$year==y & data$pctDiffDur>=50)/10
+      
+      d0[nbLigne,nbCol]<-sum(data$ï..city==i & data$year==y & data$pctDiffDur==0)/10
+      
+      nbCol=nbCol+1
+    }
+  }
+  nbLigne=nbLigne+1
+}
+```
+
+
+```{r}
+#Compteur pour le nombre de lignes dans les matrices
+nbLigne=1
+#boucle sur les distances au réseau
+for(i in label){
+  #Compteur pour le nombre de colonnes dans les matrices
+  nbCol=1
+  #Boucle sur les années mais on ne veut pas 2014
+  for(y in years){
+    if(y!=2014){
+      #On somme les augmentations et les diminutions de la durée des itinéraires supérieures/inférieures à x% par distance au réseau et par année puis on divise par le nombre de traces (5000) et on transforme en pourcentage
+      d1Dist[nbLigne,nbCol]<-(sum(data$ï..city==i & data$year==y & data$pctDiffDis>=1)+sum(data$ï..city==i & data$year==y & data$pctDiffDis<=-1))/10 #50 pour /5000*100
+      d1infDist[nbLigne,nbCol]<-sum(data$ï..city==i & data$year==y & data$pctDiffDis<=-1)/10 #50 pour /5000*100
+      d1supDist[nbLigne,nbCol]<-sum(data$ï..city==i & data$year==y & data$pctDiffDis>=1)/10 #50 pour /5000*100
+      
+      d5Dist[nbLigne,nbCol]<-(sum(data$ï..city==i & data$year==y & data$pctDiffDis>=5)+sum(data$ï..city==i & data$year==y & data$pctDiffDis<=-5))/10
+      d5infDist[nbLigne,nbCol]<-sum(data$ï..city==i & data$year==y & data$pctDiffDis<=-5)/10
+      d5supDist[nbLigne,nbCol]<-sum(data$ï..city==i & data$year==y & data$pctDiffDis>=5)/10
+      
+      d20Dist[nbLigne,nbCol]<-(sum(data$ï..city==i & data$year==y & data$pctDiffDis>=20)+sum(data$ï..city==i & data$year==y & data$pctDiffDis<=-20))/10
+      d20infDist[nbLigne,nbCol]<-sum(data$ï..city==i & data$year==y & data$pctDiffDis<=-20)/10
+      d20supDist[nbLigne,nbCol]<-sum(data$ï..city==i & data$year==y & data$pctDiffDis>=20)/10
+      
+      d50Dist[nbLigne,nbCol]<-(sum(data$ï..city==i & data$year==y & data$pctDiffDis>=50)+sum(data$ï..city==i & data$year==y & data$pctDiffDis<=-50))/10
+      d50infDist[nbLigne,nbCol]<-sum(data$ï..city==i & data$year==y & data$pctDiffDis<=-50)/10
+      d50supDist[nbLigne,nbCol]<-sum(data$ï..city==i & data$year==y & data$pctDiffDis>=50)/10
+      
+      nbCol=nbCol+1
+    }
+  }
+  nbLigne=nbLigne+1
+  
+}
+par(mfrow=c(1,1))
+matplot(t(d1Dist), type = "l",ylab="Percentage of routes", xlab="Years")
+legend('top', inset=c(0,-0.1),xpd=TRUE, legend=colnames(t(d1Dist)),pch=1, horiz=TRUE, col=1:6)
+save(filename="graphique/graph1pct.png",device="png")
+matplot(t(d20Dist), type = "l",ylab="Percentage of routes", xlab="Years")
+legend('top',inset=c(0,-0.1),xpd=TRUE, legend=colnames(t(d20Dist)),pch=0.5, horiz=TRUE, col=1:6)
+save(filename="graphique/graph20pct.png",device="png")
+
+```
+
+
+
+
+```{r}
+d<-data[data$year!=2014 &data$ï..city=="Tours",]
+
+  assign(paste("boxplotDist","Tours",sep=""),(ggplot(d, aes(x=year, y=pctDiffDis)) + geom_boxplot(outlier.colour='red', outlier.shape=NA,outlier.size=0)+ theme(axis.text.x = element_text(angle = 90))+ylim(-0.5,0.5))+labs(title="Tours"))
+#boxplotDist<-(ggplot(data[data$ï..city==c,], aes(x=year, y=pctDiffDis)) + geom_boxplot(outlier.colour="red", outlier.shape=NA,outlier.size=0)+ theme(axis.text.x = element_text(angle = 90))+ylim(-2,2))+labs(title=paste("Distribution de la longueur en mètres des itinéraires par année:",c,sep=" "))
+#print(boxplotDist)
+ggsave(filename=paste("graphique/boxplotDistParAnnee","Tours",".png",sep=""),device="png")
+print(boxplotDistTours)
+```
+
