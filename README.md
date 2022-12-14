@@ -34,7 +34,11 @@ If you want to use data on another region, create an OpenStreetMap account and g
 
 Here is an example for the 2014 snapshot in Centre Val-de-Loire region. Repeat it for every network you want.
 The following instructions create a cycling network based on our data extracted from Geofabrik.
+
+When that step is done, open a terminal and write the following instructions.
+
 cd working/directory
+
 docker run -t -v "${PWD}:/path/to/store/data/2014" osrm/osrm-backend osrm-extract -p /opt/bicycle.lua /path/to/data/centre2014.osm.pbf
 
 sudo docker run -t -v "${PWD}:/path/to/store/data/2014" osrm/osrm-backend osrm-partition /path/to/data/centre2014.osrm
@@ -43,7 +47,7 @@ sudo docker run -t -v "${PWD}:/path/to/store/data/2014" osrm/osrm-backend osrm-c
 
 #Route generation
 
-You first need to turn the services on. The parameter 5014 should be changed for each network if you want to run multiple networks at the same time.
+You first need to turn the services on. The parameter 5014 should be changed for each network if you want to run multiple networks at the same time. Run in a terminal that instruction to open the access to one network. Repeat it for every other network you want. It is possible to launch multiple networks on the same terminal.
 
 sudo docker run -d -p 5014:5000 -v "/path/to/store/data:/data" osrm/osrm-backend osrm-routed --algorithm mld /path/to/data/centre2014.osrm
 
