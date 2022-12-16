@@ -60,6 +60,8 @@ sudo docker stop ${CONTAINER_ID_BACKEND}
 
 #Analysis of the data
 
+The data used for the analysis is available here (https://utbox.univ-tours.fr/s/xKFo5BJgAHtnAmK).
+
 #Routes examples reproduction
 
 The figures 2, 3 and 4 are screenshots taken from QGIS with a legend added after the screenshot. Here are the guidelines to obtain them.
