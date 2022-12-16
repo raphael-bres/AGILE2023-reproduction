@@ -1,12 +1,12 @@
 ---
 title: "boxplot"
-author: "Raphaël Bres"
+author: "Anonymous"
 date: "6/24/2022"
 output: html_document
 editor_options: 
   chunk_output_type: console
 ---
-#Chargement des données
+#Packages and data loading
 
 ```{r}
 library("dplyr")
@@ -22,11 +22,9 @@ years<-levels(data$year)
 anneesEvo<-c("2014/2015","2015/2016","2016/2017","2017/2018","2018/2019","2019/2020","2020/2021","2021/2022")
 ```
 
-
-#Création des matrices
+#Matrixes creation
 
 ```{r}
-#Matrixes creation
 d1Dur<-matrix(nrow=length(label),ncol=length(anneesEvo))
 d5Dur<-matrix(nrow=length(label),ncol=length(anneesEvo))
 d20Dur<-matrix(nrow=length(label),ncol=length(anneesEvo))
