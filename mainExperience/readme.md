@@ -6,8 +6,7 @@ You will also find a R markdown file where the data is analysed and the figure 2
 The figures 5, 6 and 7 are screenshots taken from QGIS. Here are the guidelines to obtain them.
 
 When QGIS is opened, load the layer alldataZones.shp (use the shapefile to win some time). Then, go in the layer's properties, in the "Source" tab, click on "Query Builder" to filter the layer with the following expression:
-"city"='Blois' and (("idTrace" in (168, 523)) or ("idTrace"=162 and "year"in(2020,2021)))
-It should return 20 objects.
+"city"='Blois' and "idTrace" IN (523,162) and "year" IN (2014, 2019, 2020, 2021, 2022)
 In the layer's properties, in the "Symbology" tab, change "Single symbol" to "Categorized" and use the "year" attribute. The following colors refers for the years:
 - 2014, black
 - 2019, purple
