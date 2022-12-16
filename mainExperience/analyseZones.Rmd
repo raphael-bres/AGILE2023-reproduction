@@ -144,6 +144,8 @@ for(i in label){
 }
 ```
 
+#Analysis of route length
+
 d1dist is table 1 and d20dist is table 2. The "average" column of both tables are computed right after the two for loops
 
 
@@ -184,12 +186,8 @@ for(i in label){
 rowMeans(d1Dist)
 rowMeans(d20dist)
 
-```
+#Boxplots shown in figure 2
 
-
-##Boxplots shown in figure 2
-
-```{r}
 #Sub data for Tours and Orléans
 d<-data[data$year!=2014 &data$city=="Tours",]
 o<-data[data$year!=2014 &data$city=="Orleans",]
