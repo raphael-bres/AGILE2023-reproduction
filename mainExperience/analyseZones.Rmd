@@ -11,7 +11,7 @@ editor_options:
 ```{r}
 library("dplyr")
 library("ggplot2")
-setwd('C:/Users/22113336t/Desktop/these/reprodSchmidl/zones')
+setwd('the/path/you/want/')
 data<- read.csv('dataZones.csv',sep=',')
 data$city<-factor(data$city)
 data$year<-factor(data$year)
@@ -26,7 +26,7 @@ anneesEvo<-c("2014/2015","2015/2016","2016/2017","2017/2018","2018/2019","2019/2
 #Création des matrices
 
 ```{r}
-#Creation des matrices pour l'évolution des itinéraires d'une année à l'autre aux seuils 1, 5, 20 et 50%
+#Matrixes creation
 d1Dur<-matrix(nrow=length(label),ncol=length(anneesEvo))
 d5Dur<-matrix(nrow=length(label),ncol=length(anneesEvo))
 d20Dur<-matrix(nrow=length(label),ncol=length(anneesEvo))
@@ -52,7 +52,7 @@ d5supDist<-matrix(nrow=length(label),ncol=length(anneesEvo))
 d20supDist<-matrix(nrow=length(label),ncol=length(anneesEvo))
 d50supDist<-matrix(nrow=length(label),ncol=length(anneesEvo))
 d0<-matrix(nrow=length(label),ncol=length(anneesEvo))
-#Noms des lignes de ces matrices
+#Row names for the matrixes
 rownames(d1Dur)<-label
 rownames(d5Dur)<-label
 rownames(d20Dur)<-label
@@ -78,7 +78,7 @@ rownames(d5supDist)<-label
 rownames(d20supDist)<-label
 rownames(d50supDist)<-label
 rownames(d0)<-label
-#Noms des colonnes de ces matrices
+#Column names for the matrixes
 colnames(d1Dur)<-anneesEvo
 colnames(d5Dur)<-anneesEvo
 colnames(d20Dur)<-anneesEvo
@@ -150,17 +150,17 @@ d1dist is table 1 and d20dist is table 2. The "average" column of both tables ar
 
 
 ```{r}
-#Compteur pour le nombre de lignes dans les matrices
+#Counter for the number of rows
 nbLigne=1
-#boucle sur les distances au réseau
+#loop over the study areas
 for(i in label){
-  #Compteur pour le nombre de colonnes dans les matrices
+  #Counter for the number of columns
   nbCol=1
-  #Boucle sur les années mais on ne veut pas 2014
+  #Loop over the years without 2014 since there is no evolution computable
   for(y in years){
     if(y!=2014){
-      #On somme les augmentations et les diminutions de la durée des itinéraires supérieures/inférieures à x% par distance au réseau et par année puis on divise par le nombre de traces (5000) et on transforme en pourcentage
-      d1Dist[nbLigne,nbCol]<-(sum(data$city==i & data$year==y & data$pctDiffDis>=1)+sum(data$city==i & data$year==y & data$pctDiffDis<=-1))/10
+      #Sum of the increases and/or decreases of 1, 5, 20 and 50% divided by the number of routes (1000) in percentage
+      d1Dist[nbLigne,nbCol]<-(sum(data$city==i & data$year==y & data$pctDiffDis>=1)+sum(data$city==i & data$year==y & data$pctDiffDis<=-1))/10#table 1 without the averages
       d1infDist[nbLigne,nbCol]<-sum(data$city==i & data$year==y & data$pctDiffDis<=-1)/10
       d1supDist[nbLigne,nbCol]<-sum(data$city==i & data$year==y & data$pctDiffDis>=1)/10
       
@@ -168,7 +168,7 @@ for(i in label){
       d5infDist[nbLigne,nbCol]<-sum(data$city==i & data$year==y & data$pctDiffDis<=-5)/10
       d5supDist[nbLigne,nbCol]<-sum(data$city==i & data$year==y & data$pctDiffDis>=5)/10
       
-      d20Dist[nbLigne,nbCol]<-(sum(data$city==i & data$year==y & data$pctDiffDis>=20)+sum(data$city==i & data$year==y & data$pctDiffDis<=-20))/10
+      d20Dist[nbLigne,nbCol]<-(sum(data$city==i & data$year==y & data$pctDiffDis>=20)+sum(data$city==i & data$year==y & data$pctDiffDis<=-20))/10 #table 2 without the averages
       d20infDist[nbLigne,nbCol]<-sum(data$city==i & data$year==y & data$pctDiffDis<=-20)/10
       d20supDist[nbLigne,nbCol]<-sum(data$city==i & data$year==y & data$pctDiffDis>=20)/10
       
@@ -185,31 +185,22 @@ for(i in label){
 #Completion for table 1 and table 2 with the average value
 rowMeans(d1Dist)
 rowMeans(d20dist)
-#Plots
-par(mfrow=c(1,1))
-matplot(t(d1Dist), type = "l",ylab="Percentage of routes", xlab="Years")
-legend('top', inset=c(0,-0.1),xpd=TRUE, legend=colnames(t(d1Dist)),pch=1, horiz=TRUE, col=1:6)
-save(filename="graphique/graph1pct.png",device="png")
-matplot(t(d20Dist), type = "l",ylab="Percentage of routes", xlab="Years")
-legend('top',inset=c(0,-0.1),xpd=TRUE, legend=colnames(t(d20Dist)),pch=0.5, horiz=TRUE, col=1:6)
-save(filename="graphique/graph20pct.png",device="png")
 
 ```
 
 
-
+##Boxplots shown in figure 2
 
 ```{r}
 #Sub data for Tours and Orléans
 d<-data[data$year!=2014 &data$city=="Tours",]
 o<-data[data$year!=2014 &data$city=="Orleans",]
 #Boxplots that are saved
-#Tours
-  assign(paste("boxplotDist","Tours",sep=""),(ggplot(d, aes(x=year, y=pctDiffDis)) + geom_boxplot(outlier.colour='red', outlier.shape=NA,outlier.size=0)+ theme(axis.text.x = element_text(angle = 90))+ylim(-0.5,0.5))+labs(title="Tours"))
-  ggsave(filename=paste("graphique/boxplotDistParAnnee","Tours",".png",sep=""),device="png")
-#Orléans  
-assign(paste("boxplotDist","Orleans",sep=""),(ggplot(o, aes(x=year, y=pctDiffDis)) + geom_boxplot(outlier.colour='red', outlier.shape=NA,outlier.size=0)+ theme(axis.text.x = element_text(angle = 90))+ylim(-0.5,0.5))+labs(title="Orléans"))
-#print(boxplotDist)
-ggsave(filename=paste("graphique/boxplotDistParAnnee","Orleans",".png",sep=""),device="png")
+#Tours (on the left)
+boxplotDistTours=ggplot(d, aes(x=year, y=pctDiffDis)) + geom_boxplot(outlier.colour='red', outlier.shape=NA,outlier.size=0)+ theme(axis.text.x = element_text(angle = 90))+ylim(-0.5,0.5)+labs(title="Tours")
+boxplotDistTours
+#Orléans  (on the right)
+boxplotDistOrleans=ggplot(o, aes(x=year, y=pctDiffDis)) + geom_boxplot(outlier.colour='red', outlier.shape=NA,outlier.size=0)+ theme(axis.text.x = element_text(angle = 90))+ylim(-0.5,0.5)+labs(title="Orléans")
+boxplotDistOrleans
 ```
 
