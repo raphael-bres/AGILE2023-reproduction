@@ -47,7 +47,7 @@ sudo docker run -t -v "${PWD}:/path/to/store/data/2014" osrm/osrm-backend osrm-c
 
 #Route generation
 
-You first need to turn the services on. The parameter 5014 should be changed for each network if you want to run multiple networks at the same time. Run in a terminal that instruction to open the access to one network. Repeat it for every other network you want. It is possible to launch multiple networks on the same terminal.
+You first need to turn the services on. The parameter 5014 should be changed for each network if you want to run multiple networks at the same time. For this experiment, the 5014 number corresponds to 3000 + year of the OSM snapshot. Run in a terminal that instruction to open the access to one network. Repeat it for every other network you want. It is possible to launch multiple networks on the same terminal.
 
 sudo docker run -d -p 5014:5000 -v "/path/to/store/data:/data" osrm/osrm-backend osrm-routed --algorithm mld /path/to/data/centre2014.osrm
 
@@ -60,13 +60,16 @@ sudo docker stop ${CONTAINER_ID_BACKEND}
 
 #Analysis of the data
 
-The data used for the analysis is available here (https://utbox.univ-tours.fr/s/xKFo5BJgAHtnAmK).
+The data used for the analysis is available here (https://utbox.univ-tours.fr/s/xKFo5BJgAHtnAmK). If you use data you have generated yourself, the numbers can slightly change from the ones in the paper.
+
+Table 2 and 3 have been assembled with data computed in the Rmarkdown file available in this deposit.
+
 
 #Routes examples reproduction
 
-The figures 2, 3 and 4 are screenshots taken from QGIS with a legend added after the screenshot. Here are the guidelines to obtain them.
+The Figure 5,6 and 7 are screenshots taken from QGIS with a legend added after the screenshot. Here are the guidelines to obtain them.
 
-When QGIS is opened, load the layer alldataZones.shp (use the shapefile to win some time but you can also use the geojson generated from the Python script). Then, go in the layer's properties, in the "Source" tab, click on "Query Builder" to filter the layer with the following expression: "city"='Blois' and (("idTrace" in (168, 523)) or ("idTrace"=162 and "year"in(2020,2021))) It should return 20 objects. In the layer's properties, in the "Symbology" tab, change "Single symbol" to "Categorized" and use the "year" attribute. The following colors refers for the years:
+When QGIS is opened, load the layer alldataZones.shp (use the shapefile to win some time but you can also use the geojson generated from the Python script). Then, go in the layer's properties, in the "Source" tab, click on "Query Builder" to filter the layer with the following expression: "city"='Blois' AND (("idTrace" = 523 AND year IN (2014, 2019, 2020, 2021, 2022)) OR ("idTrace"=162 AND "year" in (2020, 2021))) It should return 7 objects. In the layer's properties, in the "Symbology" tab, change "Single symbol" to "Categorized" and use the "year" attribute. The following colors refers for the years:
 
 - 2014, black
 - 2019, purple
@@ -74,6 +77,6 @@ When QGIS is opened, load the layer alldataZones.shp (use the shapefile to win s
 - 2021, neon green
 - 2022, brown
 
-You can add the start and end point by using the tool "Extract Specific Vertices". As parameters, choose alldata.shp as input layer, for "Vertex indices" write 0,-1 and you can launch the tool. A layer named "Vertices" should appear in the "Layers" menu. On the properties of that new layer, in the "Symbology" tab, change "Single symbol" to "Categorized" and use the "vertex_pos" attribute with the 0 in red and the -1 in green. The traces for the other years are hidden behind the others so you can let them as you want.
+You can add the starting and ending point by using the tool "Extract Specific Vertices" from the toolbox. As parameters, choose the routes file as input layer, for "Vertex indices" write 0,-1 (0 for starting and -1 for ending) and you can launch the tool. A layer named "Vertices" should appear in the "Layers" menu. On the properties of that new layer, in the "Symbology" tab, change "Single symbol" to "Categorized" and use the "vertex_pos" attribute with the 0 in red and the -1 in green. The traces for the other years are hidden behind the others so you can raise the hidden layers' width.
 
-On the map, figure 5 is on the top right, figure 6 is on the bottom and figure 7 is on the top left.
+On the map, Figure 5 and 6 are on the right route. Figure 5 is around the starting point and Figure 6 around the ending point. Figure 7 is on the left route.
