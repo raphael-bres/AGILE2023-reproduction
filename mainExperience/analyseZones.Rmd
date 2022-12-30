@@ -9,8 +9,11 @@ editor_options:
 #Packages and data loading
 
 ```{r}
+install.packages("dplyr")
 library("dplyr")
+install.packages("ggplot2")
 library("ggplot2")
+
 setwd('the/path/you/want/')
 data<- read.csv('dataZones.csv',sep=',')
 data$city<-factor(data$city)
