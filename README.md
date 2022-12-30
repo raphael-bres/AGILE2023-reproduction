@@ -1,5 +1,5 @@
 # AGILE2023-reproduction
-This repository is here to do the reproduction of the article "Cycling network evolution in OpenStreetMap" published at AGILE 2023 conference
+This repository is here to reproduct the article "Analysis of cycling network evolution in OpenStreetMap through a data quality prism" submitted at AGILE 2023 conference
 
 The requirements section presents what tools are needed in order to reproduce the experiments. The data download part leads to the website where the data was downloaded. The network generation part explains how to create a network from the downloaded data.
 
