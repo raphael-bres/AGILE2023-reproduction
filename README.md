@@ -51,7 +51,7 @@ You first need to turn the services on. The parameter 5014 should be changed for
 
 sudo docker run -d -p 5014:5000 -v "/path/to/store/data:/data" osrm/osrm-backend osrm-routed --algorithm mld /path/to/data/centre2014.osrm
 
-You can now launch the Python script to generate the routes. If you have chosen another area, you should change the bounding box in the script. The results are two files named alldataZones.geojson and alldata.csv
+You can now launch the Python script to generate the routes and modify Line 163 and 166 with a path where the GEOJSON and the CSV file should be saved. If you have chosen another area, you should change the bounding box in the script. The results are two files named alldataZones.geojson and alldata.csv
 
 When the routes are generated, you can close the services by executing the two following instructions.
 
@@ -63,6 +63,7 @@ sudo docker stop ${CONTAINER_ID_BACKEND}
 The data used for the analysis is available here (https://utbox.univ-tours.fr/s/xKFo5BJgAHtnAmK). If you use data you have generated yourself, the numbers can slightly change from the ones in the paper.
 
 Table 2 and 3 have been assembled with data computed in the Rmarkdown file available in this deposit.
+Line 17 should be modified with the path to the CSV file generated in the route generation step
 
 
 #Routes examples reproduction
