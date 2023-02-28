@@ -35,7 +35,7 @@ The data used was every snapshot at January the 1st from 2014 to 2022 included.
 Here is an example for the 2014 snapshot in Centre Val-de-Loire region. Repeat it for every network you want.
 The following instructions create a cycling network based on our data extracted from Geofabrik.
 
-When that step is done, open a terminal and write the following instructions.
+When that step is done, open a terminal and write the following instructions. Each time the year 2014 is written, it should be changed to the year corresponding to the snapshot you are using.
 
 cd working/directory
 
@@ -47,7 +47,7 @@ sudo docker run -t -v "${PWD}:/path/to/store/data/2014" osrm/osrm-backend osrm-c
 
 #Route generation
 
-You first need to turn the services on. The parameter 5014 should be changed for each network if you want to run multiple networks at the same time. For this experiment, the 5014 number corresponds to 3000 + year of the OSM snapshot. Run in a terminal that instruction to open the access to one network. Repeat it for every other network you want. It is possible to launch multiple networks on the same terminal.
+You first need to turn the services on. The parameter 5014 should be changed for each network if you want to run multiple networks at the same time. For this experiment, the 5014 number corresponds to 3000 + year of the OSM snapshot. The 5000 number should not be changed. Run in a terminal that instruction to open the access to one network. Repeat it for every other network you want. It is possible to launch multiple networks on the same terminal.
 
 sudo docker run -d -p 5014:5000 -v "/path/to/store/data:/data" osrm/osrm-backend osrm-routed --algorithm mld /path/to/data/centre2014.osrm
 
