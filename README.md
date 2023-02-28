@@ -16,7 +16,7 @@ You can download Python by using this link (https://techpiezo.com/python/install
 The following packages should also be installed. Since pip is installed with Python 3.8, you just have to launch the following instructions:
 - numpy (pip install numpy)
 - requests (pip install requests)
-- geoson (pip install geojson)
+- geojson (pip install geojson)
 - csv (pip install csv)
 
 ##R 4.1
@@ -27,8 +27,8 @@ Follow this link to install QGIS (https://www.qgis.org/en/site/forusers/alldownl
 
 #Data download
 
-The data used for the experiment is here (TODO).
-If you want to use data on another region, create an OpenStreetMap account and go to https://osm-internal.download.geofabrik.de/. At the bottom of the page, in the yellow area, click on connect with your OpenStreetMap account and choose the area you want.
+The data used during the experiment is provided by Geofabrik (https://osm-internal.download.geofabrik.de/europe/france/centre.html?oauth_token_secret_encr=pIX6N_buN6DEYifrzq1hT1Y4r8Do_dOcalIU9idjIbX500LRwk6ozHhXK601AAMGcw-vXd3jEGWv8cyBk45hPibsJrzu7YPhB5Y508SzEEI%3D&oauth_token=zUhruGhV49VAMsDyQa75pQSgzhXwO4f9HJegn8np).
+The data used was every snapshot at January the 1st from 2014 to 2022 included.
 
 #Network generation
 
