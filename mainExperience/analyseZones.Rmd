@@ -187,7 +187,7 @@ for(i in label){
 }
 #Completion for table 1 and table 2 with the average value
 rowMeans(d1Dist)
-rowMeans(d20dist)
+rowMeans(d20Dist)
 
 #Boxplots shown in figure 2
 
