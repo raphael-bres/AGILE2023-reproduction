@@ -28,7 +28,8 @@ Follow this link to install QGIS (https://www.qgis.org/en/site/forusers/alldownl
 #Data download
 
 The data used during the experiment is provided by Geofabrik (https://osm-internal.download.geofabrik.de/europe/france/centre.html?oauth_token_secret_encr=pIX6N_buN6DEYifrzq1hT1Y4r8Do_dOcalIU9idjIbX500LRwk6ozHhXK601AAMGcw-vXd3jEGWv8cyBk45hPibsJrzu7YPhB5Y508SzEEI%3D&oauth_token=zUhruGhV49VAMsDyQa75pQSgzhXwO4f9HJegn8np).
-The data used was every snapshot at January the 1st from 2014 to 2022 included.
+When you are on the webpage, go to the last item of the "Other Formats and Auxiliary Files" list named "raw directory index". 
+The data used was every snapshot at January the 1st from 2014 to 2022 included so you need to download the file "centre-140101-internal.osm.pbf" for 2014.
 
 #Network generation
 
